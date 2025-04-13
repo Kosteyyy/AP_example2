@@ -15,20 +15,31 @@ export class FormComponent {
     product: Product = new Product();
     editing: boolean = false;
 
-    nameField: FormControl = new FormControl("", {
-        validators: [
-            Validators.required,
-            Validators.minLength(3),
-            Validators.pattern("^[A-Za-z ]+$"),
-        ],
-        updateOn: "change",
-    });
+    // nameField: FormControl = new FormControl("", {
+    //     validators: [
+    //         Validators.required,
+    //         Validators.minLength(3),
+    //         Validators.pattern("^[A-Za-z ]+$"),
+    //     ],
+    //     updateOn: "change",
+    // });
 
-    categoryField: FormControl = new FormControl();
+    // categoryField: FormControl = new FormControl();
 
+    // productForm: FormGroup = new FormGroup({
+    //     name: this.nameField,
+    //     category: this.categoryField,
+    // });
     productForm: FormGroup = new FormGroup({
-        name: this.nameField,
-        category: this.categoryField,
+        name: new FormControl("", {
+            validators: [
+                Validators.required,
+                Validators.minLength(3),
+                Validators.pattern("^[A-Za-z ]+$"),
+            ],
+            updateOn: "change",
+        }),
+        category: new FormControl(),
     });
 
     constructor(
