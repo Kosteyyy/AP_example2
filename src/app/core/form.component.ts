@@ -43,6 +43,10 @@ export class FormComponent {
         price: new FormControl("", {
             validators: [Validators.required, Validators.pattern("^[0-9.]+$")],
         }),
+        details: new FormGroup({
+            supplier: new FormControl("", { validators: Validators.required }),
+            keywords: new FormControl("", { validators: Validators.required }),
+        }),
     });
 
     constructor(
@@ -52,6 +56,16 @@ export class FormComponent {
     ) {
         this.state.changes.subscribe((upd) => this.handleStateChange(upd));
         this.messageService.reportMessage(new Message("Creating New Product"));
+    }
+
+    ngOnInit() {
+        this.productForm
+            .get("details")
+            ?.statusChanges.subscribe((newStatus) => {
+                this.messageService.reportMessage(
+                    new Message(`Details ${newStatus}`)
+                );
+            });
     }
 
     // ngOnInit() {

@@ -14,7 +14,7 @@ export class ValidationErrorsDirective {
     name: string = "";
 
     @Input("validationErrorsLabel")
-    label?: string;
+    label?: string; // Для вложенных контролов мы не можем использовать control, либо можем изменить имя.
 
     @Input("validationErrors")
     formGroup?: FormGroup;
