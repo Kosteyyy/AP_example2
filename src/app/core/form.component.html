@@ -1,4 +1,26 @@
-<form #form="ngForm" (ngSubmit)="submitForm(form)" (reset)="form.resetForm()">
+<div class="form-group">
+    <label>Name</label>
+    <input
+        class="form-control"
+        name="name"
+        [formControl]="nameField"
+        #name="ngForm"
+    />
+    <ul
+        class="text-danger list-unstyled mt-1"
+        *ngIf="name.dirty && name.invalid"
+    >
+        <li *ngFor="let err of name.errors | validationFormat : 'Имя'">
+            {{ err }}
+        </li>
+    </ul>
+</div>
+<div class="form-group">
+    <label>Category</label>
+    <input class="form-control" name="category" [formControl]="categoryField" />
+    </div>
+
+<!-- <form #form="ngForm" (ngSubmit)="submitForm(form)" (reset)="form.resetForm()">
     <div class="form-group">
         <label>Name</label>
         <input
@@ -39,4 +61,4 @@
         </button>
         <button type="reset" class="btn btn-secondary m-1">Cancel</button>
     </div>
-</form>
+</form> -->
