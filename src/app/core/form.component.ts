@@ -4,7 +4,13 @@ import { MODES, SharedState, StateUpdate } from "./sharedState.service";
 import { MessageService } from "../messages/message.service";
 import { Model } from "../model/repository.model";
 import { Message } from "../messages/message.model";
-import { FormControl, FormGroup, NgForm, Validators } from "@angular/forms";
+import {
+    FormArray,
+    FormControl,
+    FormGroup,
+    NgForm,
+    Validators,
+} from "@angular/forms";
 
 @Component({
     selector: "paForm",
@@ -14,6 +20,8 @@ import { FormControl, FormGroup, NgForm, Validators } from "@angular/forms";
 export class FormComponent {
     product: Product = new Product();
     editing: boolean = false;
+
+    keywordGroup = new FormArray([this.createKeywordFormControl()]);
 
     // nameField: FormControl = new FormControl("", {
     //     validators: [
@@ -45,7 +53,7 @@ export class FormComponent {
         }),
         details: new FormGroup({
             supplier: new FormControl("", { validators: Validators.required }),
-            keywords: new FormControl("", { validators: Validators.required }),
+            keywords: this.keywordGroup,
         }),
     });
 
@@ -58,15 +66,15 @@ export class FormComponent {
         this.messageService.reportMessage(new Message("Creating New Product"));
     }
 
-    ngOnInit() {
-        this.productForm
-            .get("details")
-            ?.statusChanges.subscribe((newStatus) => {
-                this.messageService.reportMessage(
-                    new Message(`Details ${newStatus}`)
-                );
-            });
-    }
+    // ngOnInit() {
+    //     this.productForm
+    //         .get("details")
+    //         ?.statusChanges.subscribe((newStatus) => {
+    //             this.messageService.reportMessage(
+    //                 new Message(`Details ${newStatus}`)
+    //             );
+    //         });
+    // }
 
     // ngOnInit() {
     //     this.productForm.statusChanges.subscribe((newStatus) => {
@@ -105,6 +113,7 @@ export class FormComponent {
 
     handleStateChange(newState: StateUpdate) {
         this.editing = newState.mode == MODES.EDIT;
+        this.keywordGroup.clear();
         if (this.editing && newState.id) {
             Object.assign(
                 this.product,
@@ -113,6 +122,9 @@ export class FormComponent {
             this.messageService.reportMessage(
                 new Message(`Editing ${this.product.name}`)
             );
+            this.product.details?.keywords?.forEach((val) => {
+                this.keywordGroup.push(this.createKeywordFormControl());
+            });
             // this.nameField.setValue(this.product.name);
             // this.categoryField.setValue(this.product.category);
         } else {
@@ -123,6 +135,9 @@ export class FormComponent {
             // this.nameField.setValue("");
             // this.categoryField.setValue("");
         }
+        if (this.keywordGroup.length == 0) {
+            this.keywordGroup.push(this.createKeywordFormControl());
+        }
         this.productForm.reset(this.product);
     }
 
@@ -131,10 +146,14 @@ export class FormComponent {
             Object.assign(this.product, this.productForm.value);
             this.model.saveProduct(this.product);
             this.product = new Product();
+            this.keywordGroup.clear();
+            this.keywordGroup.push(this.createKeywordFormControl());
             this.productForm.reset();
         }
     }
     resetForm() {
+        this.keywordGroup.clear();
+        this.keywordGroup.push(this.createKeywordFormControl());
         this.editing = true;
         this.product = new Product();
         this.productForm.reset();
@@ -147,4 +166,16 @@ export class FormComponent {
     //         form.resetForm();
     //     }
     // }
+
+    createKeywordFormControl() {
+        return new FormControl("", { validators: Validators.pattern("^[A-Za-z ]+$") });
+    }
+
+    addKeywordControl() {
+        this.keywordGroup.push(this.createKeywordFormControl());
+    }
+
+    removeKeywordControl(index: number) {
+        this.keywordGroup.removeAt(index);
+    }
 }
