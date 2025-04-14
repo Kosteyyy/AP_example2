@@ -11,6 +11,7 @@ import {
     NgForm,
     Validators,
 } from "@angular/forms";
+import { FilteredFormArray } from "./filteredFormArray";
 
 @Component({
     selector: "paForm",
@@ -21,7 +22,7 @@ export class FormComponent {
     product: Product = new Product();
     editing: boolean = false;
 
-    keywordGroup = new FormArray([this.createKeywordFormControl()]);
+    keywordGroup = new FilteredFormArray([this.createKeywordFormControl()]);
 
     // nameField: FormControl = new FormControl("", {
     //     validators: [
