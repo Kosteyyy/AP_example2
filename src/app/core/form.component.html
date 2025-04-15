@@ -47,7 +47,12 @@
 
     <div class="form-group">
         <label>Price</label>
-        <input class="form-control" formControlName="price" />
+        <input
+            class="form-control"
+            formControlName="price"
+            [high]="300"
+            [low]="10"
+        />
         <ul class="text-danger list-unstyled mt-1">
             <li
                 *validationErrors="

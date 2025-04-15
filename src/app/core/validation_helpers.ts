@@ -32,6 +32,11 @@ export class ValidationHelper implements PipeTransform {
                         `Значение ${name} не должно превышать ${errors["limit"].limit}`
                     );
                     break;
+                case "hilow":
+                    messages.push(
+                        `Значение ${name} должно быть между ${errors["hilow"].low} и ${errors["hilow"].high}`
+                    );
+                    break;
             }
         }
         return messages;
