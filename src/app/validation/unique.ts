@@ -6,23 +6,54 @@ import {
 } from "@angular/forms";
 
 export class UniqueValidator {
+    static uniquechild(control: AbstractControl): ValidationErrors | null {
+        return control.parent?.hasError("unique")
+            ? { "unique-child": {} }
+            : null;
+    }
+
     static unique(): ValidatorFn {
         return (control: AbstractControl): ValidationErrors | null => {
+            let badElems: AbstractControl[] = [];
+            let goodElems: AbstractControl[] = [];
             if (control instanceof FormArray) {
-                let badElems = control.controls.filter((child, index) => {
-                    return control.controls
-                        .filter((c, i2) => i2 != index)
-                        .some(
-                            (target) =>
-                                target.value != "" &&
-                                target.value == child.value
-                        );
+                control.controls.forEach((child, index) => {
+                    if (
+                        control.controls
+                            .filter((c, i2) => i2 != index)
+                            .some(
+                                (target) =>
+                                    target.value != "" &&
+                                    target.value == child.value
+                            )
+                    ) {
+                        badElems.push(child);
+                    } else goodElems.push(child);
                 });
-                if (badElems.length > 0) {
-                    return { unique: {} };
-                }
+
+                setTimeout(() => {
+                    badElems.forEach((c) => {
+                        if (!c.hasValidator(this.uniquechild)) {
+                            c.markAsDirty();
+                            c.addValidators(this.uniquechild);
+                            c.updateValueAndValidity({
+                                onlySelf: true,
+                                emitEvent: false,
+                            });
+                        }
+                    });
+                    goodElems.forEach((c) => {
+                        if (c.hasValidator(this.uniquechild)) {
+                            c.removeValidators(this.uniquechild);
+                        }
+                        c.updateValueAndValidity({
+                            onlySelf: true,
+                            emitEvent: false,
+                        });
+                    });
+                });
             }
-            return null;
+            return badElems.length > 0 ? { unique: {} } : null;
         };
     }
 }
