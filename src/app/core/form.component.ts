@@ -12,6 +12,7 @@ import {
     Validators,
 } from "@angular/forms";
 import { FilteredFormArray } from "./filteredFormArray";
+import { LimitValidator } from "../validation/limit";
 
 @Component({
     selector: "paForm",
@@ -24,21 +25,6 @@ export class FormComponent {
 
     keywordGroup = new FilteredFormArray([this.createKeywordFormControl()]);
 
-    // nameField: FormControl = new FormControl("", {
-    //     validators: [
-    //         Validators.required,
-    //         Validators.minLength(3),
-    //         Validators.pattern("^[A-Za-z ]+$"),
-    //     ],
-    //     updateOn: "change",
-    // });
-
-    // categoryField: FormControl = new FormControl();
-
-    // productForm: FormGroup = new FormGroup({
-    //     name: this.nameField,
-    //     category: this.categoryField,
-    // });
     productForm: FormGroup = new FormGroup({
         name: new FormControl("", {
             validators: [
@@ -50,7 +36,11 @@ export class FormComponent {
         }),
         category: new FormControl("", { validators: Validators.required }),
         price: new FormControl("", {
-            validators: [Validators.required, Validators.pattern("^[0-9.]+$")],
+            validators: [
+                Validators.required,
+                Validators.pattern("^[0-9.]+$"),
+                LimitValidator.Limit(300),
+            ],
         }),
         details: new FormGroup({
             supplier: new FormControl("", { validators: Validators.required }),
@@ -66,51 +56,6 @@ export class FormComponent {
         this.state.changes.subscribe((upd) => this.handleStateChange(upd));
         this.messageService.reportMessage(new Message("Creating New Product"));
     }
-
-    // ngOnInit() {
-    //     this.productForm
-    //         .get("details")
-    //         ?.statusChanges.subscribe((newStatus) => {
-    //             this.messageService.reportMessage(
-    //                 new Message(`Details ${newStatus}`)
-    //             );
-    //         });
-    // }
-
-    // ngOnInit() {
-    //     this.productForm.statusChanges.subscribe((newStatus) => {
-    //         if (newStatus == "INVALID") {
-    //             let invalidControls: string[] = [];
-    //             for (let controlName in this.productForm.controls) {
-    //                 if (this.productForm.controls[controlName].invalid) {
-    //                     invalidControls.push(controlName);
-    //                 }
-    //             }
-    //             this.messageService.reportMessage(
-    //                 new Message(`INVALID: ${invalidControls.join(", ")}`)
-    //             );
-    //         } else {
-    //             this.messageService.reportMessage(new Message(newStatus));
-    //         }
-    //     });
-
-    // this.nameField.statusChanges.subscribe((newStatus) => {
-    //     if (newStatus == "INVALID") {
-    //         this.categoryField.disable();
-    //     } else {
-    //         this.categoryField.enable();
-    //     }
-    // });
-
-    // this.nameField.valueChanges.subscribe((newValue) => {
-    //     this.messageService.reportMessage(
-    //         new Message(newValue || "(Empty)")
-    //     );
-    //     if (typeof newValue == "string" && newValue.length % 2 == 0) {
-    //         this.nameField.markAsPristine();
-    //     }
-    // });
-    // }
 
     handleStateChange(newState: StateUpdate) {
         this.editing = newState.mode == MODES.EDIT;
@@ -169,7 +114,9 @@ export class FormComponent {
     // }
 
     createKeywordFormControl() {
-        return new FormControl("", { validators: Validators.pattern("^[A-Za-z ]+$") });
+        return new FormControl("", {
+            validators: Validators.pattern("^[A-Za-z ]+$"),
+        });
     }
 
     addKeywordControl() {
