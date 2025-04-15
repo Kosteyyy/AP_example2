@@ -37,6 +37,9 @@ export class ValidationHelper implements PipeTransform {
                         `Значение ${name} должно быть между ${errors["hilow"].low} и ${errors["hilow"].high}`
                     );
                     break;
+                case "unique":
+                    messages.push(`Поле ${name} должно быть уникальным`);
+                    break;
             }
         }
         return messages;

@@ -13,6 +13,7 @@ import {
 } from "@angular/forms";
 import { FilteredFormArray } from "./filteredFormArray";
 import { LimitValidator } from "../validation/limit";
+import { UniqueValidator } from "../validation/unique";
 
 @Component({
     selector: "paForm",
@@ -23,7 +24,9 @@ export class FormComponent {
     product: Product = new Product();
     editing: boolean = false;
 
-    keywordGroup = new FilteredFormArray([this.createKeywordFormControl()]);
+    keywordGroup = new FilteredFormArray([this.createKeywordFormControl()], {
+        validators: UniqueValidator.unique(),
+    });
 
     productForm: FormGroup = new FormGroup({
         name: new FormControl("", {

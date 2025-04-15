@@ -92,6 +92,18 @@
             >
                 Add Keyword
             </button>
+            <ul class="text-danger list-unstyled mt-1">
+                <li
+                    *validationErrors="
+                        productForm;
+                        control: 'details.keywords';
+                        label: 'Ключевое слово';
+                        let err
+                    "
+                >
+                    {{ err }}
+                </li>
+            </ul>
             <div
                 class="form-group"
                 *ngFor="
