@@ -40,6 +40,11 @@ export class ValidationHelper implements PipeTransform {
                 case "unique":
                     messages.push(`Поле ${name} должно быть уникальным`);
                     break;
+                case "prohibited":
+                    messages.push(
+                        `Поле ${name} не может содержать "${errors["prohibited"].prohibited}"`
+                    );
+                    break;
             }
         }
         return messages;
