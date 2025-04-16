@@ -31,6 +31,7 @@
                 <button
                     class="btn btn-warning btn-sm"
                     (click)="editProduct(item.id)"
+                    routerLink="/form/edit"
                 >
                     Edit
                 </button>
@@ -38,7 +39,7 @@
         </tr>
     </tbody>
 </table>
-<button class="btn btn-primary mt-1" (click)="createProduct()">
+<button class="btn btn-primary mt-1" (click)="createProduct()" routerLink="/form/create">
     Create New Product
 </button>
 <button class="btn btn-danger mt-1" (click)="deleteProduct(-1)">

@@ -10,6 +10,7 @@ export class MessageErrorHandler implements ErrorHandler {
     ) {}
     handleError(error: any): void {
         let mgs = error instanceof Error ? error.message : error.toString();
+        // Для триггера детекции изменений
         this.ngZone.run(
             () => this.messageService.reportMessage(new Message(mgs, true)),
             0
