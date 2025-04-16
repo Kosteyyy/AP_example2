@@ -15,7 +15,7 @@ import { FilteredFormArray } from "./filteredFormArray";
 import { LimitValidator } from "../validation/limit";
 import { UniqueValidator } from "../validation/unique";
 import { ProhibitedValidator } from "../validation/progibited";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
     selector: "paForm",
@@ -59,8 +59,7 @@ export class FormComponent {
     constructor(
         private model: Model,
         activeRoute: ActivatedRoute,
-        private state: SharedState,
-        private messageService: MessageService
+        private router: Router
     ) {
         this.editing = activeRoute.snapshot.params["mode"] == "edit";
         console.log("🚀 ~ FormComponent ~ activeRoute:", activeRoute);
@@ -80,48 +79,13 @@ export class FormComponent {
                 this.productForm.patchValue(this.product);
             });
         }
-        // this.state.changes.subscribe((upd) => this.handleStateChange(upd));
-        // this.messageService.reportMessage(new Message("Creating New Product"));
     }
-
-    // handleStateChange(newState: StateUpdate) {
-    //     this.editing = newState.mode == MODES.EDIT;
-    //     this.keywordGroup.clear();
-    //     if (this.editing && newState.id) {
-    //         Object.assign(
-    //             this.product,
-    //             this.model.getProduct(newState.id) ?? new Product()
-    //         );
-    //         this.messageService.reportMessage(
-    //             new Message(`Editing ${this.product.name}`)
-    //         );
-    //         this.product.details?.keywords?.forEach((val) => {
-    //             this.keywordGroup.push(this.createKeywordFormControl());
-    //         });
-    //         // this.nameField.setValue(this.product.name);
-    //         // this.categoryField.setValue(this.product.category);
-    //     } else {
-    //         this.product = new Product();
-    //         this.messageService.reportMessage(
-    //             new Message("Creating New Product")
-    //         );
-    //         // this.nameField.setValue("");
-    //         // this.categoryField.setValue("");
-    //     }
-    //     if (this.keywordGroup.length == 0) {
-    //         this.keywordGroup.push(this.createKeywordFormControl());
-    //     }
-    //     this.productForm.reset(this.product);
-    // }
 
     submitForm() {
         if (this.productForm.valid) {
             Object.assign(this.product, this.productForm.value);
             this.model.saveProduct(this.product);
-            this.product = new Product();
-            this.keywordGroup.clear();
-            this.keywordGroup.push(this.createKeywordFormControl());
-            this.productForm.reset();
+            this.router.navigateByUrl("/");
         }
     }
     resetForm() {
@@ -131,14 +95,6 @@ export class FormComponent {
         this.product = new Product();
         this.productForm.reset();
     }
-
-    // submitForm(form: NgForm) {
-    //     if (form.valid) {
-    //         this.model.saveProduct(this.product);
-    //         this.product = new Product();
-    //         form.resetForm();
-    //     }
-    // }
 
     createKeywordFormControl() {
         return new FormControl("", {

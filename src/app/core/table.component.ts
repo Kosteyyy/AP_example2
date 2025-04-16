@@ -23,12 +23,4 @@ export class TableComponent {
             this.model.deleteProduct(key);
         }
     }
-
-    editProduct(key?: number) {
-        this.state.update(MODES.EDIT, key);
-    }
-
-    createProduct() {
-        this.state.update(MODES.CREATE);
-    }
 }
