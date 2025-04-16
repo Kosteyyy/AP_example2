@@ -9,9 +9,27 @@ import { ValidationHelper } from "./validation_helpers";
 import { ValidationErrorsDirective } from "./validationErrors.directive";
 import { HiLowValidatorDirective } from "../validation/hilow";
 import { RouterModule } from "@angular/router";
+import { ProductCountComponent } from "./productCount.component";
+import { CategoryCountComponent } from "./categoryCount.component";
+import { NotFoundComponent } from "./notFound.component";
 @NgModule({
-    imports: [BrowserModule, FormsModule, ModelModule, ReactiveFormsModule, RouterModule],
-    declarations: [TableComponent, FormComponent, ValidationHelper, ValidationErrorsDirective, HiLowValidatorDirective],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        ModelModule,
+        ReactiveFormsModule,
+        RouterModule,
+    ],
+    declarations: [
+        TableComponent,
+        FormComponent,
+        ValidationHelper,
+        ValidationErrorsDirective,
+        HiLowValidatorDirective,
+        ProductCountComponent,
+        CategoryCountComponent,
+        NotFoundComponent,
+    ],
     exports: [ModelModule, TableComponent, FormComponent],
     // providers: [SharedState],
 })

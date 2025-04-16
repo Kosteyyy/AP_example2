@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { Product } from "../model/product.model";
-import { MODES, SharedState, StateUpdate } from "./sharedState.service";
+// import { MODES, SharedState, StateUpdate } from "./sharedState.service";
 import { MessageService } from "../messages/message.service";
 import { Model } from "../model/repository.model";
 import { Message } from "../messages/message.model";
@@ -57,28 +57,20 @@ export class FormComponent {
     });
 
     constructor(
-        private model: Model,
+        public model: Model,
         activeRoute: ActivatedRoute,
         private router: Router
     ) {
-        this.editing = activeRoute.snapshot.params["mode"] == "edit";
-        console.log("🚀 ~ FormComponent ~ activeRoute:", activeRoute);
-        let id = activeRoute.snapshot.params["id"];
-        if (id != null) {
-            model.getProductObservable(id).subscribe((p) => {
-                Object.assign(this.product, p || new Product());
-                this.product.name =
-                    activeRoute.snapshot.params["name"] ?? this.product.name;
-                this.product.category =
-                    activeRoute.snapshot.params["category"] ??
-                    this.product.category;
-                let price = activeRoute.snapshot.params["price"];
-                if (price != null) {
-                    this.product.price = Number.parseFloat(price);
-                }
-                this.productForm.patchValue(this.product);
-            });
-        }
+        activeRoute.params.subscribe((params) => {
+            this.editing = activeRoute.snapshot.params["mode"] == "edit";
+            let id = params["id"];
+            if (id != null) {
+                model.getProductObservable(id).subscribe((p) => {
+                    Object.assign(this.product, p || new Product());
+                    this.productForm.patchValue(this.product);
+                });
+            }
+        });
     }
 
     submitForm() {

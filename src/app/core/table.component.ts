@@ -1,21 +1,40 @@
 import { Component } from "@angular/core";
 import { Model } from "../model/repository.model";
-import { MODES, SharedState } from "./sharedState.service";
 import { Product } from "../model/product.model";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
     selector: "paTable",
     templateUrl: "table.component.html",
 })
 export class TableComponent {
-    constructor(private model: Model, private state: SharedState) {}
+    category: string | null = null;
+
+    constructor(private model: Model, activeRoute: ActivatedRoute) {
+        activeRoute.params.subscribe((params) => {
+            this.category = params["category"] || null;
+        });
+    }
 
     getProduct(key: number): Product | undefined {
         return this.model.getProduct(key);
     }
 
     getProducts(): Product[] {
-        return this.model.getProducts();
+        return this.model
+            .getProducts()
+            .filter(
+                (p) => this.category == null || p.category == this.category
+            );
+    }
+
+    get categories(): string[] {
+        return this.model
+            .getProducts()
+            .map((p) => p.category)
+            .filter(
+                (c, index, array) => c != undefined && array.indexOf(c) == index
+            ) as string[];
     }
 
     deleteProduct(key?: number) {
