@@ -12,6 +12,7 @@ import { RouterModule } from "@angular/router";
 import { ProductCountComponent } from "./productCount.component";
 import { CategoryCountComponent } from "./categoryCount.component";
 import { NotFoundComponent } from "./notFound.component";
+import { RequiredMessageDirective } from "./requiredMessage.directive";
 @NgModule({
     imports: [
         BrowserModule,
@@ -29,6 +30,7 @@ import { NotFoundComponent } from "./notFound.component";
         ProductCountComponent,
         CategoryCountComponent,
         NotFoundComponent,
+        RequiredMessageDirective
     ],
     exports: [ModelModule, TableComponent, FormComponent],
     // providers: [SharedState],
