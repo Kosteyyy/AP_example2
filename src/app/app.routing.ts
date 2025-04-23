@@ -5,6 +5,8 @@ import { NotFoundComponent } from "./core/notFound.component";
 import { ProductCountComponent } from "./core/productCount.component";
 import { CategoryCountComponent } from "./core/categoryCount.component";
 import { ModelResolver } from "./model/model.resolver";
+import { TermsGuard } from "./terms.guard";
+
 
 const childRoutes: Routes = [
     {
@@ -15,6 +17,7 @@ const childRoutes: Routes = [
             { path: "", component: ProductCountComponent },
         ],
         resolve: { model: ModelResolver }, // Ключи не важны
+        canActivateChild: [TermsGuard]
     },
 ];
 
@@ -28,6 +31,7 @@ const routes: Routes = [
         path: "form/:mode",
         component: FormComponent,
         resolve: { model: ModelResolver },
+        canActivate: [TermsGuard]
     },
     { path: "does", redirectTo: "/form/create", pathMatch: "prefix" },
     { path: "table", component: TableComponent, children: childRoutes },
