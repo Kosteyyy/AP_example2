@@ -8,7 +8,6 @@ import { ModelResolver } from "./model/model.resolver";
 import { TermsGuard } from "./terms.guard";
 import { UnsavedGuard } from "./unsaved.guard";
 
-
 const childRoutes: Routes = [
     {
         path: "",
@@ -18,22 +17,27 @@ const childRoutes: Routes = [
             { path: "", component: ProductCountComponent },
         ],
         resolve: { model: ModelResolver }, // Ключи не важны
-        canActivateChild: [TermsGuard]
+        canActivateChild: [TermsGuard],
     },
 ];
 
 const routes: Routes = [
     {
+        path: "ondemand",
+        loadChildren: () =>
+            import("./ondemand/ondemand.module").then((m) => m.OndemandModule),
+    },
+    {
         path: "form/:mode/:id",
         component: FormComponent,
         resolve: { model: ModelResolver },
-        canDeactivate: [UnsavedGuard]
+        canDeactivate: [UnsavedGuard],
     },
     {
         path: "form/:mode",
         component: FormComponent,
         resolve: { model: ModelResolver },
-        canActivate: [TermsGuard]
+        canActivate: [TermsGuard],
     },
     { path: "does", redirectTo: "/form/create", pathMatch: "prefix" },
     { path: "table", component: TableComponent, children: childRoutes },

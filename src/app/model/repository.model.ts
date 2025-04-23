@@ -52,7 +52,7 @@ export class Model {
             }
             subject.next(nextId);
             subject.complete();
-            console.log("🚀 ~ Model ~ this.replaySubject.subscribe ~ nextId:", nextId)
+            // console.log("🚀 ~ Model ~ this.replaySubject.subscribe ~ nextId:", nextId)
         });
         return subject;
     }
@@ -69,7 +69,7 @@ export class Model {
             } else {
                 nextId = id || 0;
             }
-            console.log("🚀 ~ Model ~ this.replaySubject.subscribe ~ nextId:", nextId)
+            // console.log("🚀 ~ Model ~ this.replaySubject.subscribe ~ nextId:", nextId)
             subject.next(nextId);
             subject.complete();
         });
