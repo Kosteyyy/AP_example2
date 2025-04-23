@@ -7,12 +7,13 @@ import { routing } from "./app.routing";
 import { AppComponent } from "./app.component";
 import { TermsGuard } from "./terms.guard";
 import { LoadGuard } from "./load.guard";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 // import { AppComponent } from './app.component';
 
 @NgModule({
     declarations: [AppComponent],
-    imports: [BrowserModule, ModelModule, CoreModule, MessageModule, routing],
+    imports: [BrowserModule, ModelModule, CoreModule, MessageModule, routing, BrowserAnimationsModule],
     providers: [TermsGuard, LoadGuard],
     bootstrap: [AppComponent],
 })
