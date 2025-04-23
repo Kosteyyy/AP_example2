@@ -16,6 +16,15 @@ let routing = RouterModule.forChild([
             { outlet: "right", path: "", component: SecondComponent },
         ],
     },
+    {
+        path: "swap",
+        component: OndemandComponent,
+        children: [
+            { outlet: "primary", path: "", component: SecondComponent },
+            { outlet: "left", path: "", component: FirstComponent },
+            { outlet: "right", path: "", component: FirstComponent },
+        ],
+    },
 ]);
 
 @NgModule({
