@@ -27,7 +27,6 @@
     [formGroup]="productForm"
     #form="ngForm"
     (ngSubmit)="submitForm()"
-    (reset)="resetForm()"
 >
     <div class="form-group">
         <label>Name</label>
@@ -178,7 +177,7 @@
         >
             {{ editing ? "Save" : "Create" }}
         </button>
-        <button type="reset" class="btn btn-secondary m-1" routerLink="/">
+        <button type="button" class="btn btn-secondary m-1" routerLink="/">
             Cancel
         </button>
     </div>

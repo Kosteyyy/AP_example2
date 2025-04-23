@@ -13,6 +13,7 @@ import { ProductCountComponent } from "./productCount.component";
 import { CategoryCountComponent } from "./categoryCount.component";
 import { NotFoundComponent } from "./notFound.component";
 import { RequiredMessageDirective } from "./requiredMessage.directive";
+import { UnsavedGuard } from "../unsaved.guard";
 @NgModule({
     imports: [
         BrowserModule,
@@ -33,6 +34,6 @@ import { RequiredMessageDirective } from "./requiredMessage.directive";
         RequiredMessageDirective
     ],
     exports: [ModelModule, TableComponent, FormComponent],
-    // providers: [SharedState],
+    providers: [UnsavedGuard],
 })
 export class CoreModule {}

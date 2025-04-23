@@ -80,12 +80,16 @@ export class FormComponent {
             this.router.navigateByUrl("/");
         }
     }
-    resetForm() {
-        this.keywordGroup.clear();
-        this.keywordGroup.push(this.createKeywordFormControl());
-        this.editing = true;
-        this.product = new Product();
-        this.productForm.reset();
+    // resetForm() {
+    //     this.keywordGroup.clear();
+    //     this.keywordGroup.push(this.createKeywordFormControl());
+    //     this.editing = true;
+    //     this.product = new Product();
+    //     this.productForm.reset();
+    // }
+
+    unsavedChanges(): boolean {
+        return this.productForm.dirty;
     }
 
     createKeywordFormControl() {
