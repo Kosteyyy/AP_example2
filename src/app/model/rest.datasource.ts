@@ -14,16 +14,7 @@ export class RestDataSource {
 
     getData(): Observable<Product[]> {
         return this.sendRequest<any | Product[]>("GET", this.url).pipe(
-            delay(5000),
-            // map((data) => {
-            //     if (true) {
-            //         throw new Error("Что-то пошло не так");
-            //     }
-            //     return data;
-            // }),
-            // catchError((err) => {
-            //     return throwError(() => new Error("Что-то пошло не так"));
-            // })
+            // delay(5000),
         );
     }
     saveProduct(product: Product): Observable<Product> {
