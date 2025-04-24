@@ -1,4 +1,4 @@
-<div class="form-group bg-info text-white p-2">
+<!-- <div class="form-group bg-info text-white p-2">
     <label>Category</label>
     <select [(ngModel)]="highlightCategory" class="form-control">
         <option value="">None</option>
@@ -6,7 +6,7 @@
             {{ category }}
         </option>
     </select>
-</div>
+</div> -->
 
 <table class="table table-sm table-bordered table-striped">
     <thead>
@@ -20,9 +20,9 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let item of getProducts()" [@rowHighlight]="getRowState(item.category)">
+        <tr *ngFor="let item of getProducts()">
             <td>{{ item.id }}</td>
-            <td>{{ item.name }} {{getRowState(item.category)}}</td>
+            <td>{{ item.name }}</td>
             <td>{{ item.category }}</td>
             <td>{{ item.price | currency : "USD" }}</td>
             <td>
@@ -33,13 +33,13 @@
             </td>
             <td class="text-center">
                 <button
-                    class="btn btn-danger btn-sm m-1"
+                    mat-flat-button color="accent"
                     (click)="deleteProduct(item.id)"
                 >
                     Delete
                 </button>
                 <button
-                    class="btn btn-warning btn-sm"
+                    mat-flat-button color="warn"
                     [routerLink]="['/form', 'edit', item.id]"
                 >
                     Edit
@@ -49,7 +49,7 @@
     </tbody>
 </table>
 <div class="p-2 text-center">
-    <button class="btn btn-primary m-1" routerLink="/form/create">
+    <button mat-flat-button color="primary" routerLink="/form/create">
         Create New Product
     </button>
 </div>

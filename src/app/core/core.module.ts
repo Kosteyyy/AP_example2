@@ -14,6 +14,7 @@ import { CategoryCountComponent } from "./categoryCount.component";
 import { NotFoundComponent } from "./notFound.component";
 import { RequiredMessageDirective } from "./requiredMessage.directive";
 import { UnsavedGuard } from "../unsaved.guard";
+import { MaterialFeatures } from "../material.module";
 @NgModule({
     imports: [
         BrowserModule,
@@ -21,6 +22,7 @@ import { UnsavedGuard } from "../unsaved.guard";
         ModelModule,
         ReactiveFormsModule,
         RouterModule,
+        MaterialFeatures
     ],
     declarations: [
         TableComponent,
