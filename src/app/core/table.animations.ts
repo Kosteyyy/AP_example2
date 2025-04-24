@@ -15,6 +15,21 @@ export const HighlightTrigger = trigger("rowHighlight", [
         "notselected",
         style({ backgroundColor: "lightsalmon", fontSize: "12px" })
     ),
-    transition("selected => notselected", animate("200ms")),
+    state(
+        "*",
+        style({
+            border: "solid black 2px",
+        })
+    ),
+    state(
+        "void",
+        style({
+            opacity: 0,
+        })
+    ),
+    transition("selected => notselected", animate("1000ms")),
     transition("notselected => selected", animate("400ms")),
+    // transition(':enter, * => notselected', animate("800ms")),
+    // transition("* => selected", animate("400ms")),
+    // transition("void => *", animate("500ms")),
 ]);
