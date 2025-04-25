@@ -16,7 +16,7 @@ export class Model {
         this.dataSource.getData().subscribe((data) => {
             this.products = data;
             this.replaySubject.next(data);
-            this.replaySubject.complete();
+            // this.replaySubject.complete();
         });
         // this.dataSource.getData().subscribe((data) => (this.products = data));
     }
@@ -38,6 +38,10 @@ export class Model {
         return subject;
     }
 
+    getProductsObservable(): Observable<Product[]> {
+        return this.replaySubject;
+    }
+
     getNextProductId(id?: number): Observable<number> {
         let subject = new ReplaySubject<number>(1);
         this.replaySubject.subscribe((products) => {
@@ -56,7 +60,7 @@ export class Model {
         });
         return subject;
     }
-    
+
     getPreviousProductId(id?: number): Observable<number> {
         let subject = new ReplaySubject<number>(1);
         this.replaySubject.subscribe((products) => {
@@ -64,8 +68,8 @@ export class Model {
             let index = products.findIndex((p) => this.locator(p, id));
             if (index > -1) {
                 nextId =
-                products[index > 0 ? index - 1 : products.length - 1].id ??
-                0;
+                    products[index > 0 ? index - 1 : products.length - 1].id ??
+                    0;
             } else {
                 nextId = id || 0;
             }
@@ -87,6 +91,7 @@ export class Model {
                     this.locator(item, p.id)
                 );
                 this.products.splice(index, 1, p);
+                this.replaySubject.next(this.products);
             });
         }
     }
