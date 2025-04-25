@@ -15,6 +15,7 @@ import { NotFoundComponent } from "./notFound.component";
 import { RequiredMessageDirective } from "./requiredMessage.directive";
 import { UnsavedGuard } from "../unsaved.guard";
 import { MaterialFeatures } from "../material.module";
+import { CustomButton } from "./customButton.component";
 @NgModule({
     imports: [
         BrowserModule,
@@ -33,7 +34,8 @@ import { MaterialFeatures } from "../material.module";
         ProductCountComponent,
         CategoryCountComponent,
         NotFoundComponent,
-        RequiredMessageDirective
+        RequiredMessageDirective,
+        CustomButton
     ],
     exports: [ModelModule, TableComponent, FormComponent],
     providers: [UnsavedGuard],
