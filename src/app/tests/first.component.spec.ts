@@ -29,7 +29,6 @@ describe("FirstComponent", () => {
         fixture = TestBed.createComponent(FirstComponent);
         component = fixture.componentInstance;
         debugElement = fixture.debugElement;
-        console.log("🚀 ~ beforeEach ~ debugElement:", debugElement)
         bindingElement = debugElement.query(By.css("span")).nativeElement;
     });
 
