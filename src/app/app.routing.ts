@@ -6,15 +6,24 @@ import { UnsavedGuard } from "./unsaved.guard";
 
 const routes: Routes = [
     {
-        path: "form/:mode/:id",
-        component: FormComponent,
-        canDeactivate: [UnsavedGuard],
+        path: "ondemand",
+        loadChildren: () =>
+            import("./ondemand/ondemand.module").then((m) => m.OndemandModule),
     },
-    { path: "form/:mode", component: FormComponent },
-    { path: "table", component: TableComponent },
-    { path: "table/:category", component: TableComponent },
-    { path: "", redirectTo: "/table", pathMatch: "full" },
-    { path: "**", component: NotFoundComponent },
+    { path: "", redirectTo: "/ondemand", pathMatch: "full" },
 ];
+
+// const routes: Routes = [
+//     {
+//         path: "form/:mode/:id",
+//         component: FormComponent,
+//         canDeactivate: [UnsavedGuard],
+//     },
+//     { path: "form/:mode", component: FormComponent },
+//     { path: "table", component: TableComponent },
+//     { path: "table/:category", component: TableComponent },
+//     { path: "", redirectTo: "/table", pathMatch: "full" },
+//     { path: "**", component: NotFoundComponent },
+// ];
 
 export const routing = RouterModule.forRoot(routes);
