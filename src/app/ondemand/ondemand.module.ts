@@ -5,6 +5,7 @@ import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
 import { FirstComponent } from "./first.component";
 import { SecondComponent } from "./second.component";
+import { PaAttrDirective } from "./attr.directive";
 
 let routing = RouterModule.forChild([
     {
@@ -30,7 +31,7 @@ let routing = RouterModule.forChild([
 @NgModule({
     imports: [CommonModule, routing],
     exports: [OndemandComponent],
-    declarations: [OndemandComponent, FirstComponent, SecondComponent],
+    declarations: [OndemandComponent, FirstComponent, SecondComponent, PaAttrDirective],
     providers: [],
 })
 export class OndemandModule {}
