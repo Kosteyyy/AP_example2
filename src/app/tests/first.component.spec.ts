@@ -2,14 +2,16 @@ import { DebugElement } from "@angular/core";
 import { Product } from "../model/product.model";
 import { Model } from "../model/repository.model";
 import { FirstComponent } from "../ondemand/first.component";
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 
 describe("FirstComponent", () => {
     let fixture: ComponentFixture<FirstComponent>;
     let component: FirstComponent;
     let debugElement: DebugElement;
-    let bindingElement: HTMLSpanElement;
+    // let bindingElement: HTMLSpanElement;
+    // let spanElement: HTMLSpanElement;
+    let divElement: HTMLDivElement;
 
     let mockRepository = {
         getProducts: function () {
@@ -21,33 +23,36 @@ describe("FirstComponent", () => {
         },
     };
 
-    beforeEach(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             declarations: [FirstComponent],
             providers: [{ provide: Model, useValue: mockRepository }],
         });
-        fixture = TestBed.createComponent(FirstComponent);
-        component = fixture.componentInstance;
-        debugElement = fixture.debugElement;
-        bindingElement = debugElement.query(By.css("span")).nativeElement;
-    });
+        TestBed.compileComponents().then(() => {
+            fixture = TestBed.createComponent(FirstComponent);
+            component = fixture.componentInstance;
+            debugElement = fixture.debugElement;
+            // bindingElement = debugElement.query(By.css("span")).nativeElement;
+            divElement = debugElement.children[0].nativeElement;
+        });
+    }));
 
     it("is defined", () => {
         expect(component).toBeDefined();
     });
 
-    it("filters categories", () => {
-        component.category = "Chess";
+    // 
+    
+    it("handles mouse events", () => {
+        expect(component.highlighted).toBeFalsy();
+        expect(divElement.classList.contains("bg-success")).toBeFalsy();
+        debugElement.triggerEventHandler("mouseenter", new Event("mouseenter"));
         fixture.detectChanges();
-        expect(component.getProducts().length).toBe(1);
-        expect(bindingElement.textContent).toContain("1");
-        component.category = "Soccer";
+        expect(component.highlighted).toBeTruthy();
+        expect(divElement.classList.contains("bg-success")).toBeTruthy();
+        debugElement.triggerEventHandler("mouseleave", new Event("mouseleave"));
         fixture.detectChanges();
-        expect(component.getProducts().length).toBe(2);
-        expect(bindingElement.textContent).toContain("2");
-        component.category = "Running";
-        fixture.detectChanges();
-        expect(component.getProducts().length).toBe(0);
-        expect(bindingElement.textContent).toContain("0");
-    });
+        expect(component.highlighted).toBeFalsy();
+        expect(divElement.classList.contains("bg-success")).toBeFalsy();
+        });
 });
