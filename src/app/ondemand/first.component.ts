@@ -1,4 +1,10 @@
-import { Component, HostListener, OnInit } from "@angular/core";
+import {
+    Component,
+    EventEmitter,
+    HostListener,
+    OnInit,
+    Output,
+} from "@angular/core";
 import { Model } from "../model/repository.model";
 import { Product } from "../model/product.model";
 
@@ -12,6 +18,9 @@ export class FirstComponent implements OnInit {
     category: string = "Soccer";
     highlighted: boolean = false;
 
+    @Output("pa-highlight")
+    change = new EventEmitter<boolean>();
+
     ngOnInit() {}
 
     getProducts(): Product[] {
@@ -24,5 +33,6 @@ export class FirstComponent implements OnInit {
     @HostListener("mouseleave", ["$event.type"])
     setHighlight(type: string) {
         this.highlighted = type == "mouseenter";
+        this.change.emit(this.highlighted);
     }
 }
