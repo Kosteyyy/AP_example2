@@ -1,12 +1,21 @@
-import { DebugElement } from "@angular/core";
+import { Component, DebugElement, ViewChild } from "@angular/core";
 import { Product } from "../model/product.model";
 import { Model } from "../model/repository.model";
 import { FirstComponent } from "../ondemand/first.component";
 import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 
+@Component({
+    template: `<first [pa-model]="model"></first>`,
+})
+class TestComponent {
+    constructor(public model: Model) {}
+    @ViewChild(FirstComponent)
+    firstComponent!: FirstComponent;
+}
+
 describe("FirstComponent", () => {
-    let fixture: ComponentFixture<FirstComponent>;
+    let fixture: ComponentFixture<TestComponent>;
     let component: FirstComponent;
     let debugElement: DebugElement;
     // let bindingElement: HTMLSpanElement;
@@ -25,15 +34,19 @@ describe("FirstComponent", () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            declarations: [FirstComponent],
+            declarations: [FirstComponent, TestComponent],
             providers: [{ provide: Model, useValue: mockRepository }],
         });
         TestBed.compileComponents().then(() => {
-            fixture = TestBed.createComponent(FirstComponent);
-            component = fixture.componentInstance;
+            fixture = TestBed.createComponent(TestComponent);
+            fixture.detectChanges();
+            component = fixture.componentInstance.firstComponent;
             debugElement = fixture.debugElement;
             // bindingElement = debugElement.query(By.css("span")).nativeElement;
-            divElement = debugElement.children[0].nativeElement;
+            // divElement = debugElement.children[0].nativeElement;
+            debugElement = fixture.debugElement.query(
+                By.directive(FirstComponent)
+            );
         });
     }));
 
@@ -56,12 +69,28 @@ describe("FirstComponent", () => {
     //     expect(divElement.classList.contains("bg-success")).toBeFalsy();
     //     });
 
-    it("implements output property", () => {
-        let highlighted: boolean = false;
-        component.change.subscribe((value) => (highlighted = value));
-        debugElement.triggerEventHandler("mouseenter", new Event("mouseenter"));
-        expect(highlighted).toBeTruthy();
-        debugElement.triggerEventHandler("mouseleave", new Event("mouseleave"));
-        expect(highlighted).toBeFalsy();
+    // it("implements output property", () => {
+    //     let highlighted: boolean = false;
+    //     component.change.subscribe((value) => (highlighted = value));
+    //     debugElement.triggerEventHandler("mouseenter", new Event("mouseenter"));
+    //     expect(highlighted).toBeTruthy();
+    //     debugElement.triggerEventHandler("mouseleave", new Event("mouseleave"));
+    //     expect(highlighted).toBeFalsy();
+    // });
+    it("Получает модель через Input", () => {
+        component.category = "Chess";
+        fixture.detectChanges();
+        let products = mockRepository
+            .getProducts()
+            .filter((p) => p.category == component.category);
+        let componentProducts = component.getProducts();
+        // Продукты в компоненте равны продуктам из репозитория
+        for (let i = 0; i < componentProducts.length; i++) {
+            expect(componentProducts[i]).toEqual(products[i]);
+        }
+        // Спан firstComponent содержит количество элементов
+        expect(
+            debugElement.query(By.css("span")).nativeElement.textContent
+        ).toContain(products.length);
     });
 });

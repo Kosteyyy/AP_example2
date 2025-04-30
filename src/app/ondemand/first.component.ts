@@ -2,6 +2,7 @@ import {
     Component,
     EventEmitter,
     HostListener,
+    Input,
     OnInit,
     Output,
 } from "@angular/core";
@@ -18,21 +19,24 @@ export class FirstComponent implements OnInit {
     category: string = "Soccer";
     highlighted: boolean = false;
 
-    @Output("pa-highlight")
-    change = new EventEmitter<boolean>();
+    // @Output("pa-highlight")
+    // change = new EventEmitter<boolean>();
 
     ngOnInit() {}
 
     getProducts(): Product[] {
-        return this.repository
+        return this.model == null?  [] : this.model
             .getProducts()
             .filter((p) => p.category == this.category);
     }
 
-    @HostListener("mouseenter", ["$event.type"])
-    @HostListener("mouseleave", ["$event.type"])
-    setHighlight(type: string) {
-        this.highlighted = type == "mouseenter";
-        this.change.emit(this.highlighted);
-    }
+//     @HostListener("mouseenter", ["$event.type"])
+//     @HostListener("mouseleave", ["$event.type"])
+//     setHighlight(type: string) {
+//         this.highlighted = type == "mouseenter";
+//         this.change.emit(this.highlighted);
+//     }
+
+    @Input('pa-model')
+    model?: Model;
 }
